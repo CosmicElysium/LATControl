@@ -21,7 +21,7 @@ DEPSERV = Camera.h CommControl.h IOControl.h LatI.h Motor.h Sockets.h CameraErro
 
 CXXFLAGS = -Wall -fexceptions -g -Ishare
 CXXFLAGSCLI = -ILATClient/inc -Icfits
-CXXFLAGSSERV = -ILATServer/inc -D_$(OS) -D_$(ARCH)
+CXXFLAGSSERV = -ILATServer/inc -ILATServer/lib/inc-pc -D_$(OS) -D_$(ARCH)
 
 LDLIBS = -lIce -lIceUtil -lpthread -lrt
 LDLIBSCLI =  -lcfitsio
@@ -29,7 +29,7 @@ LDLIBSSERV = -lPvAPI
 
 LDFLAGS =
 LDFLAGSCLI =
-LDFLAGSSERV = -LLATServer/lib/library/$(ARCH)/$(COMPILER)
+LDFLAGSSERV = -LLATServer/lib/lib-pc/$(ARCH)/$(COMPILER)
 
 SRCDIR = share/src
 SRCDIRCLI = LATClient/src
@@ -85,6 +85,12 @@ FitsTool.o : FitsTool.cpp FitsTool.h
 
 Client.o : Client.cpp lat.h FitsTool.h menu.h
 	$(CXX) $(CXXFLAGS) $(CXXFLAGSCLI) -c LATClient/src/Client.cpp -o LATClient/obj/Client.o
+
+PvApi.a PvApi.h :
+	$wget https://cdn.alliedvision.com/fileadmin/content/software/software/PvAPI/PvAPI_1.28_Linux.tgz
+	$tar xf PvAPI_1.28_Linux.tgz
+	$mv inc-pc/PvApi.h
+	$mv lib-pc/* LATServer/lib
 	
 lat.o : lat.cpp lat.h
 	$(CXX) $(CXXFLAGS) -Ishare -c share/lat.cpp -o share/obj/lat.o
@@ -96,5 +102,4 @@ lat.cpp lat.h : lat.ice
 
 clean :
 	-rm LATClient/bin/LATClient LATServer/bin/LATServer share/lat.h share/lat.cpp share/obj/lat.o LATClient/obj/Client.o LATClient/obj/FitsTool.o LATClient/obj/menu.o LATServer/obj/Server.o LATServer/obj/Camera.o LATServer/obj/CommControl.o LATServer/obj/IOControl.o LATServer/obj/LatI.o LATServer/obj/Motor.o LATServer/obj/Sockets.o LATServer/obj/CameraErrorCodes.o
-
 
