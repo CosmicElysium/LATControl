@@ -85,12 +85,6 @@ FitsTool.o : FitsTool.cpp FitsTool.h
 
 Client.o : Client.cpp lat.h FitsTool.h menu.h
 	$(CXX) $(CXXFLAGS) $(CXXFLAGSCLI) -c LATClient/src/Client.cpp -o LATClient/obj/Client.o
-
-PvApi.a PvApi.h :
-	$wget https://cdn.alliedvision.com/fileadmin/content/software/software/PvAPI/PvAPI_1.28_Linux.tgz
-	$tar xf PvAPI_1.28_Linux.tgz
-	$mv inc-pc/PvApi.h
-	$mv lib-pc/* LATServer/lib
 	
 lat.o : lat.cpp lat.h
 	$(CXX) $(CXXFLAGS) -Ishare -c share/lat.cpp -o share/obj/lat.o
